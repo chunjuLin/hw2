@@ -21,15 +21,17 @@ float sample;
 float ADCdata[1000];
 
 void get_point(){
-
-    for (int i = 0; i < 1000; i++){
-        sample = ain;
-        ADCdata[i] = sample;
-        wait_us(1000);
-    }
-    for (int i = 0; i < 1000; i++){
-        printf("%f\r\n", ADCdata[i]);
-    }
+   // while(1){
+        for (int i = 0; i < 1000; i++){
+            sample = ain;
+            ADCdata[i] = sample;
+            //ThisThread::sleep_for(1);
+            wait_us(1000);
+        }
+        for (int i = 0; i < 1000; i++){
+            printf("%f\r\n", ADCdata[i]);
+        }
+   // }
 }
 
 int main()
