@@ -11,23 +11,23 @@ AnalogOut aout(PA_4);
 AnalogIn ain(D6);
 
 Thread thread;
-
-float frequency = 10; 
+int frequency = 10; 
 float blank = 100;
 int pre_down;
 int pre_up;
 int done = 0;
 float sample;
-float ADCdata[1000];
+float ADCdata[5000];
+int k = 0;
 
 void get_point(){
    // while(1){
-        for (int i = 0; i < 1000; i++){
+       /* for (int i = 0; i < 1000; i++){
             sample = ain;
             ADCdata[i] = sample;
             //ThisThread::sleep_for(1);
             wait_us(1000);
-        }
+        }*/
         for (int i = 0; i < 1000; i++){
             printf("%f\r\n", ADCdata[i]);
         }
@@ -67,17 +67,49 @@ int main()
         uLCD.line(99, 55, 99, 73, WHITE);
 
    }
-    thread.start(get_point);
-   while (done == 1){
-        float T = 1 / frequency;
-        float dt = T / 10 * 1000000;
-        for (float i = 0.1125f; i <= 0.9f; i += 0.1125f) {
-            aout = i;
-            wait_us((int)dt);
+   // thread.start(get_point);
+   
+        float T = 1.0 / frequency;
+        float dt = T / 100 * 1000000;
+        printf("%d\n",frequency*100);
+        while (k < 1000){
+            for (float i = 0.1125f; i <= 0.9f; i += 0.01125f) {
+                aout = i;          
+                wait_us((int)dt); k++;
+            }
+            for (float i = 0.9f; i >= 0.0f; i -= 0.045f) {
+                aout = i;
+                wait_us((int)dt); k++;
+                //printf("Hi4\n");
+            }
         }
-        for (float i = 0.9f; i >= 0.0f; i -= 0.45f) {
-            aout = i;
-            wait_us((int)dt);
+        k = 0;
+       // printf("Hi\n");
+        while (k < 1000){
+            for (float i = 0.1125f; i <= 0.9f; i += 0.01125f) {
+                aout = i;
+                ADCdata[k] = ain; k++;           
+                wait_us((int)dt);
+                //printf("Hi1\n");
+            }
+            for (float i = 0.9f; i >= 0.0f; i -= 0.045f) {
+                aout = i;
+                ADCdata[k] = ain; k++;
+                wait_us((int)dt);
+                //printf("H2\n");
+            }
         }
-   }
+        for (int i = 0; i < 1000; i++){
+            printf("%f\r\n", ADCdata[i]);
+        }
+        while (done == 1){
+            for (float i = 0.1125f; i <= 0.9f; i += 0.01125f) {
+                aout = i;           
+                wait_us((int)dt + 10);
+            }
+            for (float i = 0.9f; i >= 0.0f; i -= 0.045f) {
+                aout = i;
+                wait_us((int)dt + 10);
+            }
+        }
 }
