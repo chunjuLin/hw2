@@ -73,7 +73,7 @@ int main()
         float dt = T / 100 * 1000000;
         printf("%d\n",frequency*100);
         while (k < 1000){
-            for (float i = 0.1125f; i <= 0.9f; i += 0.01125f) {
+            for (float i = 0.1125f; i <= 0.9f; i += 0.009844f) {
                 aout = i;          
                 wait_us((int)dt); k++;
             }
@@ -86,7 +86,7 @@ int main()
         k = 0;
        // printf("Hi\n");
         while (k < 1000){
-            for (float i = 0.1125f; i <= 0.9f; i += 0.01125f) {
+            for (float i = 0.1125f; i <= 0.9f; i += 0.009844f) {
                 aout = i;
                 ADCdata[k] = ain; k++;           
                 wait_us((int)dt);
@@ -103,13 +103,13 @@ int main()
             printf("%f\r\n", ADCdata[i]);
         }
         while (done == 1){
-            for (float i = 0.1125f; i <= 0.9f; i += 0.01125f) {
+            for (float i = 0.1125f; i <= 0.9f; i += 0.009844f) {
                 aout = i;           
-                wait_us((int)dt + 10);
+                wait_us((int)dt);
             }
             for (float i = 0.9f; i >= 0.0f; i -= 0.045f) {
                 aout = i;
-                wait_us((int)dt + 10);
+                wait_us((int)dt);
             }
         }
 }
